@@ -12,36 +12,7 @@ const refs = {
   overlay: document.querySelector('.lightbox__overlay'),
 };
 
-// console.log(refs.galleryList);
-
-// -------------------------------------------------------------
-// создание списка через createElement
-// -------------------------------------------------------------
-// const createGalleryItem = item => {
-//   const liEl = document.createElement('li');
-//   liEl.classList.add('gallery__item');
-//   const aEl = document.createElement('a');
-//   aEl.classList.add('gallery__link');
-//   aEl.href = item.original;
-//   const imgEl = document.createElement('img');
-//   imgEl.classList.add('gallery__image');
-//   imgEl.src = item.preview;
-//   imgEl.dataset.source = item.original;
-//   imgEl.alt = item.description;
-
-//   aEl.append(imgEl);
-//   liEl.append(aEl);
-
-//   return liEl;
-// };
-
-// const galleryItems = gallery.map(item => createGalleryItem(item));
-
-// refs.galleryList.append(...galleryItems);
-
-// -------------------------------------------------------------
 // создание списка с помощью insertAdjacentHTML с деструктуризацией
-// -------------------------------------------------------------
 const galleryItems = gallery
   .map((item, index) => createGalleryItem(item, index))
   .join('');
@@ -80,15 +51,12 @@ function onImgClick(event) {
   const currentTag = event.target;
   const currentIndex = currentTag.dataset.index;
 
-  if (currentTag.nodeName !== 'IMG') {
-    return;
+  if (currentTag.nodeName === 'IMG') {
+    currentTag.src = currentTag.dataset.source;
+
+    openModal();
+    changeImage(currentTag, currentIndex);
   }
-
-  currentTag.src = currentTag.dataset.source;
-
-  openModal();
-  changeImage(currentTag, currentIndex);
-  // changeImage(currentTag.src, currentTag.alt, currentTag.dataset.index);
 }
 
 // ==============================================================
@@ -159,7 +127,11 @@ function onPressEsc(event) {
 // -------------------------------------------------------------
 // для переключения по кнопкам
 // -------------------------------------------------------------
-let index = 0;
+let index;
+
+function setIndexImg() {
+  index = +refs.modalImg.dataset.index;
+}
 
 const btnRightLeft = `
 <button
@@ -182,23 +154,23 @@ btnRight.addEventListener('click', onPressRight);
 btnLeft.addEventListener('click', onPressLeft);
 
 function onPressRight() {
-  if (index >= gallery.length - 1) {
-    return;
+  setIndexImg();
+  if (index < gallery.length - 1) {
+    index += 1;
+    refs.modalImg.src = gallery[index].original;
+    refs.modalImg.alt = gallery[index].description;
+    changeImg();
   }
-  index = +refs.modalImg.dataset.index + 1;
-  refs.modalImg.src = gallery[index].original;
-  refs.modalImg.alt = gallery[index].description;
-  changeImg();
 }
 
 function onPressLeft() {
-  if (index === 0) {
-    return;
+  setIndexImg();
+  if (index !== 0) {
+    index -= 1;
+    refs.modalImg.src = gallery[index].original;
+    refs.modalImg.alt = gallery[index].description;
+    changeImg();
   }
-  index = +refs.modalImg.dataset.index - 1;
-  refs.modalImg.src = gallery[index].original;
-  refs.modalImg.alt = gallery[index].description;
-  changeImg();
 }
 
 // -------------------------------------------------------------
