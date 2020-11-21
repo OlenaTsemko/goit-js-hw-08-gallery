@@ -110,7 +110,8 @@ body {
   max-width: 100vw;
 }
 
-.lightbox__button {
+.lightbox__button,
+.btn {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -137,4 +138,29 @@ body {
 .lightbox__button:hover,
 .lightbox__button:focus {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* для дополнительного */
+.btn {
+  z-index: 100;
+  top: 50%;
+  transform: translate(0, -50%);
+
+  width: 100px;
+  height: 100px;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.btn-right {
+  right: 8px;
+  background-image: url('../images/icon-arrow-right.svg');
+}
+
+.btn-left {
+  left: 8px;
+  background-image: url('../images/icon-arrow-left.svg');
 }
