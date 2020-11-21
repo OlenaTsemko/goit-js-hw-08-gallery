@@ -187,6 +187,7 @@ function onPressRight() {
   }
   index = +refs.modalImg.dataset.index + 1;
   refs.modalImg.src = gallery[index].original;
+  refs.modalImg.alt = gallery[index].description;
   changeImg();
 }
 
@@ -196,6 +197,7 @@ function onPressLeft() {
   }
   index = +refs.modalImg.dataset.index - 1;
   refs.modalImg.src = gallery[index].original;
+  refs.modalImg.alt = gallery[index].description;
   changeImg();
 }
 
