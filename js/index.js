@@ -1,9 +1,7 @@
 import gallery from './gallery-items.js';
 
-// ==============================================================
 /* 1 Создание и рендер разметки по массиву данных и 
 предоставленному шаблону. */
-// ==============================================================
 const refs = {
   galleryList: document.querySelector('.js-gallery'),
   modal: document.querySelector('.js-lightbox'),
@@ -39,11 +37,11 @@ function createGalleryItem({ original, preview, description }, index) {
 
 refs.galleryList.insertAdjacentHTML('beforeend', galleryItems);
 
-// ==============================================================
 /* 2 Реализация делегирования на галерее ul.js-gallery и 
 получение url большого изображения. */
-// ==============================================================
 refs.galleryList.addEventListener('click', onImgClick);
+refs.btnClose.addEventListener('click', closeModal);
+refs.overlay.addEventListener('click', closeModal);
 
 function onImgClick(event) {
   event.preventDefault();
@@ -59,9 +57,7 @@ function onImgClick(event) {
   }
 }
 
-// ==============================================================
 /* 3 Открытие модального окна по клику на элементе галереи. */
-// ==============================================================
 function openModal() {
   window.addEventListener('keydown', onPressEsc);
   window.addEventListener('keydown', onPressArrowRight);
@@ -69,25 +65,17 @@ function openModal() {
   refs.modal.classList.add('is-open');
 }
 
-// ==============================================================
 /* 4 Подмена значения атрибута src элемента img.lightbox__image. */
-// ==============================================================
 function changeImage({ src, alt }, index) {
   refs.modalImg.src = src;
   refs.modalImg.alt = alt;
   refs.modalImg.dataset.index = index;
 }
 
-// ==============================================================
 /* 5 Закрытие модального окна по клику на кнопку 
 button[data-action="close-lightbox"]. */
 
-/* 6 Очистка значения атрибута src элемента img.lightbox__image. 
-Это необходимо для того, чтобы при следующем открытии модального 
-окна, пока грузится изображение, мы не видели предыдущее. */
-// ==============================================================
-refs.btnClose.addEventListener('click', closeModal);
-
+/* 6 Очистка значения атрибута src элемента img.lightbox__image. */
 function closeModal() {
   window.removeEventListener('keydown', onPressEsc);
   window.removeEventListener('keydown', onPressArrowRight);
@@ -98,41 +86,18 @@ function closeModal() {
 }
 
 // Дополнительно
-// ==============================================================
 /* 7 Закрытие модального окна по клику на div.lightbox__overlay. */
-// ==============================================================
-refs.overlay.addEventListener('click', closeModal);
-
-// ==============================================================
 /* 8 Закрытие модального окна по нажатию клавиши ESC. */
-// ==============================================================
 function onPressEsc(event) {
-  //   console.log(event.code);
   if (event.code === 'Escape') {
     closeModal();
   }
 }
 
-// ==============================================================
 /* 9 Пролистывание изображений галереи в открытом модальном окне 
 клавишами "влево" и "вправо". */
-// ==============================================================
-/* - добавить data-index для каждого img
- * - когда открыто модал. окно поставить addEventListener на
- * клавиши право и лево
- * - когда модал. закрыто убрать addEventListener
- * - создать функции для событий клавиши право и лево
- */
 
-// -------------------------------------------------------------
 // для переключения по кнопкам
-// -------------------------------------------------------------
-let index;
-
-function setIndexImg() {
-  index = +refs.modalImg.dataset.index;
-}
-
 const btnRightLeft = `
 <button
         type="button"
@@ -153,46 +118,48 @@ const btnLeft = document.querySelector('.btn-left');
 btnRight.addEventListener('click', onPressRight);
 btnLeft.addEventListener('click', onPressLeft);
 
+let index;
+
+function setImgIndex() {
+  index = +refs.modalImg.dataset.index;
+}
+
+function changeImgIndex() {
+  refs.modalImg.dataset.index = index;
+}
+
+function changeImg() {
+  refs.modalImg.src = gallery[index].original;
+  refs.modalImg.alt = gallery[index].description;
+}
+
 function onPressRight() {
-  setIndexImg();
+  setImgIndex();
   if (index < gallery.length - 1) {
     index += 1;
-    refs.modalImg.src = gallery[index].original;
-    refs.modalImg.alt = gallery[index].description;
     changeImg();
+    changeImgIndex();
   }
 }
 
 function onPressLeft() {
-  setIndexImg();
+  setImgIndex();
   if (index !== 0) {
     index -= 1;
-    refs.modalImg.src = gallery[index].original;
-    refs.modalImg.alt = gallery[index].description;
     changeImg();
+    changeImgIndex();
   }
 }
 
-// -------------------------------------------------------------
 // для переключения по клавишам
-// -------------------------------------------------------------
-
 function onPressArrowRight(event) {
-  setIndexImg();
   if (event.code === 'ArrowRight') {
     onPressRight();
   }
-  changeImg();
 }
 
 function onPressArrowLeft(event) {
-  setIndexImg();
   if (event.code === 'ArrowLeft') {
     onPressLeft();
   }
-  changeImg();
-}
-
-function changeImg() {
-  refs.modalImg.dataset.index = index;
 }
