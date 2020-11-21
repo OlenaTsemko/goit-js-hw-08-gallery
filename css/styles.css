@@ -156,11 +156,11 @@ body {
 }
 
 .btn-right {
-  right: 8px;
+  right: -108px;
   background-image: url('../images/icon-arrow-right.svg');
 }
 
 .btn-left {
-  left: 8px;
+  left: -108px;
   background-image: url('../images/icon-arrow-left.svg');
 }
