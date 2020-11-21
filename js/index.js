@@ -178,6 +178,7 @@ function onPressLeft() {
 // -------------------------------------------------------------
 
 function onPressArrowRight(event) {
+  setIndexImg();
   if (event.code === 'ArrowRight') {
     onPressRight();
   }
@@ -185,6 +186,7 @@ function onPressArrowRight(event) {
 }
 
 function onPressArrowLeft(event) {
+  setIndexImg();
   if (event.code === 'ArrowLeft') {
     onPressLeft();
   }
