@@ -49,12 +49,13 @@ function onImgClick(event) {
   const currentTag = event.target;
   const currentIndex = currentTag.dataset.index;
 
-  if (currentTag.nodeName === 'IMG') {
-    currentTag.src = currentTag.dataset.source;
-
-    openModal();
-    changeImage(currentTag, currentIndex);
+  if (currentTag.nodeName !== 'IMG') {
+    return;
   }
+  currentTag.src = currentTag.dataset.source;
+
+  openModal();
+  changeImage(currentTag, currentIndex);
 }
 
 /* 3 Открытие модального окна по клику на элементе галереи. */
